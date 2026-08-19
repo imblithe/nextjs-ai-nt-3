@@ -1,5 +1,6 @@
+
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
@@ -7,69 +8,22 @@ datasource db {
   provider = "mysql"
 }
 
-model Product {
-  id          Int           @id @default(autoincrement())
-  name        String        @db.VarChar(255)
-  description String        @db.Text
-  price       Float         @db.Double
-  categoryId  Int           @map("category_id")
-  category    Category      @relation(fields: [categoryId], references: [id])
-  images      ProductImage[]
-  orderItems  OrderItem[]
-
-  @@map("products")
+model product {
+  id          Int            @id @default(autoincrement())
+  name        String         @db.VarChar(100)
+  price       Decimal        @db.Decimal(10, 0)
+  description String?        @db.Text
+  images      product_images[]
 }
 
-model Category {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  products  Product[]
+model product_images {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  image_name String   @db.Text
+  created_at DateTime @default(now())
+  product    product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@map("categories")
-}
-
-model ProductImage {
-  id        Int       @id @default(autoincrement())
-  productId Int       @map("product_id")
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  imageName String    @map("image_name") @db.Text
-  createdAt DateTime  @default(now()) @map("created_at")
-
-  @@map("product_images")
-}
-
-model Customer {
-  id      Int    @id @default(autoincrement())
-  name    String @db.VarChar(255)
-  address String @db.VarChar(500)
-  phone   String @db.VarChar(20)
-  orders  Order[]
-
-  @@map("customers")
-}
-
-model Order {
-  id           Int        @id @default(autoincrement())
-  date         DateTime
-  customerId   Int        @map("customer_id")
-  customer     Customer   @relation(fields: [customerId], references: [id])
-  status       String     @db.VarChar(20)
-  totalAmount  Float      @map("total_amount") @db.Double
-  items        OrderItem[]
-
-  @@map("orders")
-}
-
-model OrderItem {
-  id        Int      @id @default(autoincrement())
-  orderId   Int      @map("order_id")
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId Int      @map("product_id")
-  product   Product  @relation(fields: [productId], references: [id])
-  quantity  Int
-  price     Float    @db.Double
-
-  @@map("order_items")
+  @@index([product_id])
 }
 
 model User {
