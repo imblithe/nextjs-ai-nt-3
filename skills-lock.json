@@ -11,7 +11,7 @@
       "source": "imblithe/skill-ai-nt-3",
       "sourceType": "github",
       "skillPath": "skills/review-architecture-project/SKILL.md",
-      "computedHash": "a0a11e6b238dda40a295041609da309f66177dbe1103b49dbb59e07293814d64"
+      "computedHash": "6653757d36235648c31b260989c91e19f4dee040e056c27848c7427191301e8d"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
