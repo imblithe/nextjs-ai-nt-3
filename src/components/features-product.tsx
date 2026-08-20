@@ -18,7 +18,7 @@ const FeaturesProduct = ({ products }: Props) => {
   };
 
   products.forEach((product) => {
-    const imageName = product.images?.[0]?.image_name || "";
+    const imageName = product.images?.[0]?.imageName || "";
     let category = "Other";
 
     if (imageName.includes("airpods")) category = "Audio";
@@ -51,7 +51,7 @@ const FeaturesProduct = ({ products }: Props) => {
             {categoryProducts.map((product) => {
               const hasImage = product.images && product.images.length > 0;
               const imageSrc = hasImage 
-                ? `/product-image/${product.images[0].image_name}` 
+                ? `/product-image/${product.images[0].imageName}` 
                 : `/product-image/${fallbackImages[category] || fallbackImages.Other}`;
 
               return (
