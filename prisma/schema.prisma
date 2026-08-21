@@ -8,83 +8,66 @@ datasource db {
   provider = "mysql"
 }
 
+model category {
+  id       Int       @id @default(autoincrement())
+  name     String?   @db.VarChar(255)
+  products product[]
+
+  @@map("categories")
+}
+
 model product {
-  id          Int            @id @default(autoincrement())
-  name        String         @db.VarChar(100)
-  price       Decimal        @db.Decimal(10, 0)
-  description String?        @db.Text
+  id          Int              @id @default(autoincrement())
+  name        String?          @db.VarChar(255)
+  description String?          @db.Text
+  price       Float?
+  category_id Int?
+  category    category?        @relation(fields: [category_id], references: [id])
   images      product_images[]
+
+  @@map("products")
 }
 
 model product_images {
   id         Int      @id @default(autoincrement())
   product_id Int
   image_name String   @db.Text
-  created_at DateTime @default(now())
+  created_at DateTime @default(now()) @db.Timestamp(0)
   product    product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
-  @@index([product_id])
+  @@map("product_images")
 }
 
-model User {
-  id            String    @id
-  name          String    @db.Text
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?   @db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+model customer {
+  id      Int     @id @default(autoincrement())
+  name    String? @db.VarChar(255)
+  address String? @db.VarChar(500)
+  phone   String? @db.VarChar(20)
+  orders  order[]
 
-  @@unique([email])
-  @@map("user")
+  @@map("customers")
 }
 
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?  @db.Text
-  userAgent String?  @db.Text
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model order {
+  id           Int         @id @default(autoincrement())
+  date         DateTime?
+  customer_id  Int?
+  status       String?     @db.Enum("delivered", "received", "processing")
+  total_amount Float?
+  customer     customer?   @relation(fields: [customer_id], references: [id])
+  order_items  order_items[]
 
-  @@unique([token])
-  @@index([userId(length: 191)])
-  @@map("session")
+  @@map("orders")
 }
 
-model Account {
-  id                    String    @id
-  accountId             String    @db.Text
-  providerId            String    @db.Text
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?   @db.Text
-  refreshToken          String?   @db.Text
-  idToken               String?   @db.Text
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?   @db.Text
-  password              String?   @db.Text
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+model order_items {
+  id         Int     @id @default(autoincrement())
+  order_id   Int
+  product_id Int
+  quantity   Int
+  price      Float
+  order      order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product    product @relation(fields: [product_id], references: [id])
 
-  @@index([userId(length: 191)])
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id
-  identifier String   @db.Text
-  value      String   @db.Text
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([identifier(length: 191)])
-  @@map("verification")
+  @@map("order_items")
 }
