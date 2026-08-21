@@ -7,7 +7,7 @@ import { ContactForm } from "./ContactForm";
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "ติดต่อเรา | COSCI",
+  title: "Contact us | COSCI",
   description: "ติดต่อร้าน COSCI สอบถามข้อมูลสินค้าและบริการ",
 };
 
@@ -73,7 +73,7 @@ export default function ContactPage() {
     <main className="mx-auto w-full max-w-(--breakpoint-xl) px-4 py-12 sm:px-6 lg:px-8">
       <header className="mx-auto max-w-2xl text-center">
         <h1 className="text-center font-medium text-4xl tracking-[-0.045em] sm:text-[2.75rem]/[1.2]">
-          ติดต่อเรา
+           Contact us
         </h1>
         <p className="mt-3 text-pretty text-center text-lg text-muted-foreground tracking-[-0.01em] sm:text-xl">
           สอบถามข้อมูลเพิ่มเติมหรือติดต่อทีมงาน เรายินดีให้ความช่วยเหลือ
