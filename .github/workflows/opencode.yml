@@ -29,7 +29,7 @@ jobs:
         uses: anomalyco/opencode/github@latest
         env:
           OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
-          github_token: ${{ secrets.gitbub_token}}
+          github_token: ${{ secrets.GITHUB_TOKEN}}
         with:
           model: ollama-cloud/gemma4:31b
-          use github token: true
+          use_github_token: true
