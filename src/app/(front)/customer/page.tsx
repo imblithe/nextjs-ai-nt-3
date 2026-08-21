@@ -21,11 +21,10 @@ export default async function CustomerPage({
 
   const skip = (currentPage - 1) * pageSize;
 
-  const totalCustomers = await prisma.user.count();
-  const customers = await prisma.user.findMany({
+  const totalCustomers = await prisma.customer.count();
+  const customers = await prisma.customer.findMany({
     skip: skip,
     take: pageSize,
-    orderBy: { createdAt: "desc" },
   });
 
   const totalPages = Math.ceil(totalCustomers / pageSize);
@@ -39,8 +38,8 @@ export default async function CustomerPage({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>Address</TableHead>
+              <TableHead>Phone</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -54,10 +53,8 @@ export default async function CustomerPage({
               customers.map((customer) => (
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.name}</TableCell>
-                  <TableCell>{customer.email}</TableCell>
-                  <TableCell>
-                    {new Date(customer.createdAt).toLocaleDateString()}
-                  </TableCell>
+                  <TableCell>{customer.address}</TableCell>
+                  <TableCell>{customer.phone}</TableCell>
                 </TableRow>
               ))
             )}
