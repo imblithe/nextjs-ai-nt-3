@@ -21,14 +21,12 @@ export default async function CustomerPage({
 
   const skip = (currentPage - 1) * pageSize;
 
-  const [customers, totalCustomers] = await Promise.all([
-    prisma.user.findMany({
-      skip: skip,
-      take: pageSize,
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.user.count(),
-  ]);
+  const totalCustomers = await prisma.user.count();
+  const customers = await prisma.user.findMany({
+    skip: skip,
+    take: pageSize,
+    orderBy: { createdAt: "desc" },
+  });
 
   const totalPages = Math.ceil(totalCustomers / pageSize);
 
